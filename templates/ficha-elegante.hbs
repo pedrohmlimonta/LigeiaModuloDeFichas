@@ -67,11 +67,6 @@
           <div class="lig-bar-fill hp" style="width: {{bars.hp.pct}}%"></div>
           {{#if bars.hp.tempPct}}<div class="lig-bar-temp-fill" style="width: {{bars.hp.tempPct}}%"></div>{{/if}}
         </div>
-        {{#if isGM}}
-        <div class="lig-bar-bonus">
-          <label>ajuste vocação <input type="number" name="system.resources.hp.bonus" value="{{system.resources.hp.bonus}}"/></label>
-        </div>
-        {{/if}}
       </div>
 
       <div class="lig-bar-box mp">
@@ -85,11 +80,6 @@
         <div class="lig-bar-track">
           <div class="lig-bar-fill mp" style="width: {{bars.mp.pct}}%"></div>
         </div>
-        {{#if isGM}}
-        <div class="lig-bar-bonus">
-          <label>ajuste vocação <input type="number" name="system.resources.mp.bonus" value="{{system.resources.mp.bonus}}"/></label>
-        </div>
-        {{/if}}
       </div>
 
       <div class="lig-bar-box heroic">
@@ -103,11 +93,6 @@
         <div class="lig-bar-track">
           <div class="lig-bar-fill heroic" style="width: {{bars.heroic.pct}}%"></div>
         </div>
-        {{#if isGM}}
-        <div class="lig-bar-bonus">
-          <label>bônus <input type="number" name="system.resources.heroic.bonus" value="{{system.resources.heroic.bonus}}"/></label>
-        </div>
-        {{/if}}
       </div>
     </div>
 
@@ -277,12 +262,12 @@
         </div>
       </section>
 
-      {{!-- Definições (raça, herança, vocação, organização) --}}
+      {{!-- Definições (raça, herança, vocação, carreira, organização) --}}
       <section class="lig-defs">
         <div class="lig-defs-head">
           <span>Definições &amp; Acesso a Listas</span>
         </div>
-        <p class="lig-hint">Raça, herança, vocação e organização concedem acesso a listas de habilidades. Arraste-as para cá ou crie abaixo.</p>
+        <p class="lig-hint">Raça, herança, vocação, carreira e organização concedem acesso a listas de habilidades. Arraste-as para cá ou crie abaixo. (Raça, herança, vocação e carreira são únicas — ao adicionar outra, o sistema pergunta se deseja substituir.)</p>
         <div class="lig-defs-grid">
           {{#each itemGroups.raca as |item|}}
           <div class="lig-item-entry def" data-item-id="{{item.id}}" draggable="true">
@@ -308,6 +293,14 @@
             {{#if ../editable}}<button type="button" class="lig-mini-btn danger" data-action="itemDelete" title="Remover">✕</button>{{/if}}
           </div>
           {{/each}}
+          {{#each itemGroups.carreira as |item|}}
+          <div class="lig-item-entry def" data-item-id="{{item.id}}" draggable="true">
+            <span class="lig-def-kind">Carreira</span>
+            <span class="lig-item-title">{{item.name}}</span>
+            <button type="button" class="lig-mini-btn" data-action="itemEdit" title="Editar">✎</button>
+            {{#if ../editable}}<button type="button" class="lig-mini-btn danger" data-action="itemDelete" title="Remover">✕</button>{{/if}}
+          </div>
+          {{/each}}
           {{#each itemGroups.organizacao as |item|}}
           <div class="lig-item-entry def" data-item-id="{{item.id}}" draggable="true">
             <span class="lig-def-kind">Organização</span>
@@ -322,6 +315,11 @@
           <button type="button" class="lig-mini-btn" data-action="itemCreate" data-type="raca">+ Raça</button>
           <button type="button" class="lig-mini-btn" data-action="itemCreate" data-type="heranca">+ Herança</button>
           <button type="button" class="lig-mini-btn" data-action="itemCreate" data-type="vocacao">+ Vocação</button>
+          {{#if canAddCareer}}
+          <button type="button" class="lig-mini-btn" data-action="itemCreate" data-type="carreira">+ Carreira</button>
+          {{else}}
+          <button type="button" class="lig-mini-btn" disabled title="Carreira só no nível 6">+ Carreira (nível 6)</button>
+          {{/if}}
           <button type="button" class="lig-mini-btn" data-action="itemCreate" data-type="organizacao">+ Organização</button>
         </div>
         {{/if}}

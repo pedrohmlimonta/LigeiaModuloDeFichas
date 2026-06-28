@@ -2,7 +2,7 @@
   "id": "ligeia-ficha-elegante",
   "title": "Ligéia — Ficha Elegante",
   "description": "Módulo de aparência para o sistema Ligeia RPG. Substitui a ficha de personagem por um layout em abas (Atributos, Equipamentos, Habilidades, Magias, Traços, Efeitos & Condições, Personalidade & Notas) com barras coloridas de Pontos de Vida (vermelho), Pontos de Magia (azul) e Pontos Heroicos (verde) sempre visíveis. Não altera o sistema: apenas registra uma ficha alternativa que herda toda a lógica original (rolagens, efeitos, XP, arrastar e soltar).",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": {
     "minimum": "13",
     "verified": "13",
