@@ -429,3 +429,55 @@
   .ligeia-fe .lig-tab-label { display: none; }
   .ligeia-fe .lig-tab { flex: 1 1 0; padding: 8px 6px; }
 }
+
+/* ================================================================== */
+/*  FAVORITOS                                                          */
+/* ================================================================== */
+
+/* Botão-estrela (em itens e em efeitos). Vazia = discreta; cheia = ouro. */
+.ligeia-fe .lig-fav-btn,
+.ligeia-fe .lig-fav-effect {
+  flex: 0 0 auto;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 6px;
+  color: var(--fe-ink-soft);
+  opacity: 0.7;
+  transition: transform 0.12s ease, color 0.12s ease, opacity 0.12s ease;
+}
+.ligeia-fe .lig-fav-btn:hover,
+.ligeia-fe .lig-fav-effect:hover {
+  transform: scale(1.18);
+  color: var(--fe-gold);
+  opacity: 1;
+}
+.ligeia-fe .lig-fav-btn.on,
+.ligeia-fe .lig-fav-effect.on {
+  color: var(--fe-gold);
+  opacity: 1;
+  text-shadow: 0 0 6px var(--fe-gold-soft);
+}
+
+/* Selo do tipo do item dentro da aba de favoritos. */
+.ligeia-fe .lig-item-tag.fav-kind {
+  background: var(--fe-gold-soft);
+  color: var(--fe-gold);
+  border: 1px solid var(--fe-gold);
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+}
+
+/* Estado vazio da aba de favoritos. */
+.ligeia-fe .lig-fav-empty {
+  padding: 26px 18px;
+  text-align: center;
+  line-height: 1.55;
+  color: var(--fe-ink-soft);
+}
+.ligeia-fe .lig-fav-empty strong {
+  color: var(--fe-gold);
+}

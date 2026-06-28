@@ -115,7 +115,7 @@
     <nav class="lig-tabs">
       {{#each tabs as |t|}}
       <button type="button" class="lig-tab {{#if t.active}}active{{/if}}"
-              data-action="tab" data-tab="{{t.id}}" title="{{t.label}}">
+              data-tab="{{t.id}}" title="{{t.label}}">
         <i class="{{t.icon}}"></i>
         <span class="lig-tab-label">{{t.label}}</span>
         {{#if t.count}}<span class="lig-tab-count">{{t.count}}</span>{{/if}}
@@ -128,6 +128,59 @@
   {{!--  Painéis das abas                                             --}}
   {{!-- ============================================================ --}}
   <div class="lig-tab-panels">
+
+    {{!-- ========================== FAVORITOS ========================= --}}
+    <section class="lig-tab-panel {{#if (eq activeTab "favoritos")}}active{{/if}}" data-tab="favoritos">
+      {{#if favCount}}
+
+        {{#if favItems.length}}
+        <div class="lig-item-group">
+          <div class="lig-item-group-head"><span>Itens favoritos</span></div>
+          {{#each favItems as |item|}}
+          <div class="lig-item-entry" data-item-id="{{item.id}}" draggable="true">
+            <img class="lig-item-icon" src="{{item.img}}" alt=""/>
+            <span class="lig-item-title">{{item.name}}</span>
+            <span class="lig-item-tag fav-kind">{{item.kindLabel}}</span>
+            {{> systems/ligeia-rpg/templates/actor/partials/item-actions.hbs item=item}}
+            {{#if (eq item.system.mode "active")}}
+            <button type="button" class="lig-item-toggle {{#if item.system.active}}on{{/if}}" data-action="itemToggle" title="Ativar/desativar">{{#if item.system.active}}●{{else}}○{{/if}}</button>
+            {{/if}}
+            <button type="button" class="lig-mini-btn" data-action="itemEdit" title="Editar">✎</button>
+            <button type="button" class="lig-fav-btn on" title="Remover dos favoritos">★</button>
+          </div>
+          {{/each}}
+        </div>
+        {{/if}}
+
+        {{#if favEffects.length}}
+        <section class="lig-applied-fx">
+          <div class="lig-section-title">Efeitos favoritos</div>
+          {{#each favEffects as |ae|}}
+          <div class="lig-applied-item {{#if ae.disabled}}off{{/if}}">
+            <div class="lig-applied-head">
+              <img src="{{ae.icon}}" alt="" class="lig-applied-icon"/>
+              <span class="lig-applied-label">{{ae.label}}</span>
+              <button type="button" class="lig-mini-btn" data-action="toggleAppliedEffect" data-index="{{ae.index}}" title="Ligar/desligar">{{#if ae.disabled}}○{{else}}●{{/if}}</button>
+              {{#if ae.hasDuration}}
+              <button type="button" class="lig-mini-btn" data-action="tickAppliedEffect" data-index="{{ae.index}}" title="Passar 1 rodada">⏱ {{ae.duration.remaining}}</button>
+              {{/if}}
+              {{#if ae.endRoll.enabled}}
+              <button type="button" class="lig-mini-btn" data-action="rollEndEffect" data-index="{{ae.index}}" title="Rolar para encerrar">🎲</button>
+              {{/if}}
+              <button type="button" class="lig-fav-effect on" data-fav-effect="{{ae.label}}" title="Remover dos favoritos">★</button>
+            </div>
+            {{#if ae.summary}}<div class="lig-applied-summary">{{ae.summary}}</div>{{/if}}
+          </div>
+          {{/each}}
+        </section>
+        {{/if}}
+
+      {{else}}
+      <div class="lig-empty lig-fav-empty">
+        Nenhum favorito ainda. Clique na <strong>☆</strong> ao lado de uma habilidade, magia, traço, equipamento ou efeito para fixá-lo aqui — com as ações dele à mão.
+      </div>
+      {{/if}}
+    </section>
 
     {{!-- ========================= ATRIBUTOS ========================= --}}
     <section class="lig-tab-panel {{#if (eq activeTab "atributos")}}active{{/if}}" data-tab="atributos">
@@ -292,6 +345,7 @@
           {{#if (eq item.system.mode "active")}}
           <button type="button" class="lig-item-toggle {{#if item.system.active}}on{{/if}}" data-action="itemToggle" title="Ativar/desativar">{{#if item.system.active}}●{{else}}○{{/if}}</button>
           {{/if}}
+          <button type="button" class="lig-fav-btn {{#if item.isFav}}on{{/if}}" title="{{#if item.isFav}}Remover dos favoritos{{else}}Favoritar{{/if}}">{{#if item.isFav}}★{{else}}☆{{/if}}</button>
           <button type="button" class="lig-mini-btn" data-action="itemEdit" title="Editar">✎</button>
           {{#if ../editable}}<button type="button" class="lig-mini-btn danger" data-action="itemDelete" title="Remover">✕</button>{{/if}}
         </div>
@@ -323,6 +377,7 @@
           {{#if (eq item.system.mode "active")}}
           <button type="button" class="lig-item-toggle {{#if item.system.active}}on{{/if}}" data-action="itemToggle" title="Ativar/desativar">{{#if item.system.active}}●{{else}}○{{/if}}</button>
           {{/if}}
+          <button type="button" class="lig-fav-btn {{#if item.isFav}}on{{/if}}" title="{{#if item.isFav}}Remover dos favoritos{{else}}Favoritar{{/if}}">{{#if item.isFav}}★{{else}}☆{{/if}}</button>
           <button type="button" class="lig-mini-btn" data-action="itemEdit" title="Editar">✎</button>
           {{#if ../../editable}}<button type="button" class="lig-mini-btn danger" data-action="itemDelete" title="Remover">✕</button>{{/if}}
         </div>
@@ -348,6 +403,7 @@
           {{#if (eq item.system.mode "active")}}
           <button type="button" class="lig-item-toggle {{#if item.system.active}}on{{/if}}" data-action="itemToggle" title="Ativar/desativar">{{#if item.system.active}}●{{else}}○{{/if}}</button>
           {{/if}}
+          <button type="button" class="lig-fav-btn {{#if item.isFav}}on{{/if}}" title="{{#if item.isFav}}Remover dos favoritos{{else}}Favoritar{{/if}}">{{#if item.isFav}}★{{else}}☆{{/if}}</button>
           <button type="button" class="lig-mini-btn" data-action="itemEdit" title="Editar">✎</button>
           {{#if ../editable}}<button type="button" class="lig-mini-btn danger" data-action="itemDelete" title="Remover">✕</button>{{/if}}
         </div>
@@ -372,6 +428,7 @@
           {{#if (eq item.system.mode "active")}}
           <button type="button" class="lig-item-toggle {{#if item.system.active}}on{{/if}}" data-action="itemToggle" title="Ativar/desativar">{{#if item.system.active}}●{{else}}○{{/if}}</button>
           {{/if}}
+          <button type="button" class="lig-fav-btn {{#if item.isFav}}on{{/if}}" title="{{#if item.isFav}}Remover dos favoritos{{else}}Favoritar{{/if}}">{{#if item.isFav}}★{{else}}☆{{/if}}</button>
           <button type="button" class="lig-mini-btn" data-action="itemEdit" title="Editar">✎</button>
           {{#if ../editable}}<button type="button" class="lig-mini-btn danger" data-action="itemDelete" title="Remover">✕</button>{{/if}}
         </div>
@@ -401,6 +458,7 @@
             {{#if ae.endRoll.enabled}}
             <button type="button" class="lig-mini-btn" data-action="rollEndEffect" data-index="{{ae.index}}" title="Rolar para encerrar">🎲</button>
             {{/if}}
+            <button type="button" class="lig-fav-effect {{#if ae.isFav}}on{{/if}}" data-fav-effect="{{ae.label}}" title="{{#if ae.isFav}}Remover dos favoritos{{else}}Favoritar{{/if}}">{{#if ae.isFav}}★{{else}}☆{{/if}}</button>
             <button type="button" class="lig-mini-btn danger" data-action="removeAppliedEffect" data-index="{{ae.index}}" title="Remover">✕</button>
           </div>
           {{#if ae.summary}}<div class="lig-applied-summary">{{ae.summary}}</div>{{/if}}
