@@ -47,8 +47,12 @@ function getFlag(doc, key) {
 class LigeiaFichaElegante extends LigeiaCharacterSheet {
   /** Aba ativa — persiste na instância para sobreviver aos re-renders. */
   #activeTab = "atributos";
-  /** Garante que o listener de cliques da UI seja ligado uma única vez. */
-  #uiBound = false;
+  /**
+   * Referência ESTÁVEL do handler de cliques. Guardada uma vez para que o
+   * removeEventListener consiga encontrá-la e removê-la, garantindo que nunca
+   * exista mais de um listener mesmo re-ligando a cada render.
+   */
+  #onUiClickBound = this.#onUiClick.bind(this);
 
   /**
    * Só os DELTAS. NÃO declaramos a action "tab": a navegação é tratada
@@ -125,11 +129,16 @@ class LigeiaFichaElegante extends LigeiaCharacterSheet {
   _onRender(context, options) {
     super._onRender(context, options);
     this._applyActiveTab();
-    // Liga o listener UMA vez no elemento raiz (persiste entre re-renders).
-    // A delegação cobre o conteúdo re-renderizado sem empilhar handlers.
-    if (!this.#uiBound && this.element) {
-      this.#uiBound = true;
-      this.element.addEventListener("click", this.#onUiClick.bind(this));
+    // Re-afirma o listener de cliques a CADA render. Algumas ações (marcar
+    // alvo com T, submitOnChange, etc.) disparam um re-render que RECONSTRÓI o
+    // elemento raiz; o ApplicationV2 religa as ações dele nesse momento, mas um
+    // listener ligado só uma vez ficaria preso no elemento antigo (e as abas
+    // parariam de responder até um F5). Religar sempre — com a MESMA referência
+    // — garante exatamente um handler ativo no elemento atual, sem empilhar.
+    const root = this.element;
+    if (root) {
+      root.removeEventListener("click", this.#onUiClickBound);
+      root.addEventListener("click", this.#onUiClickBound);
     }
   }
 
