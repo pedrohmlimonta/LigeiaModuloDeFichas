@@ -1,0 +1,53 @@
+name: Release Ligéia Ficha Elegante
+
+# Dispara quando você publica uma Release no GitHub.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Garante que a versão do module.json bate com a tag da release (vX.Y.Z)
+      # e ajusta as URLs de manifest/download para o repositório atual.
+      - name: Sincronizar versão e URLs com a tag
+        run: |
+          TAG="${GITHUB_REF_NAME}"            # ex: v1.0.0
+          VERSION="${TAG#v}"                  # ex: 1.0.0
+          REPO="${GITHUB_REPOSITORY}"         # ex: pedrohmlimonta/LigeiaModuloDeFichas
+          node -e "
+            const fs=require('fs');
+            const d=JSON.parse(fs.readFileSync('module.json','utf8'));
+            d.version='${VERSION}';
+            d.manifest='https://github.com/${REPO}/releases/latest/download/module.json';
+            d.download='https://github.com/${REPO}/releases/download/${TAG}/ligeia-ficha-elegante.zip';
+            fs.writeFileSync('module.json', JSON.stringify(d,null,2));
+            console.log('module.json -> versão', d.version);
+          "
+
+      # Empacota o módulo com o module.json na RAIZ do zip.
+      - name: Empacotar ligeia-ficha-elegante.zip
+        run: |
+          zip -r ligeia-ficha-elegante.zip \
+            module.json scripts styles templates README.md \
+            -x "*.DS_Store" "node_modules/*" ".git/*"
+
+      # Anexa module.json e o zip como assets da release.
+      - name: Anexar assets à release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            module.json
+            ligeia-ficha-elegante.zip

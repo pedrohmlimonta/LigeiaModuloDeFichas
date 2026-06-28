@@ -1,0 +1,38 @@
+{
+  "id": "ligeia-ficha-elegante",
+  "title": "Ligéia — Ficha Elegante",
+  "description": "Módulo de aparência para o sistema Ligeia RPG. Substitui a ficha de personagem por um layout em abas (Atributos, Equipamentos, Habilidades, Magias, Traços, Efeitos & Condições, Personalidade & Notas) com barras coloridas de Pontos de Vida (vermelho), Pontos de Magia (azul) e Pontos Heroicos (verde) sempre visíveis. Não altera o sistema: apenas registra uma ficha alternativa que herda toda a lógica original (rolagens, efeitos, XP, arrastar e soltar).",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13",
+    "maximum": "13"
+  },
+  "authors": [
+    {
+      "name": "Pedro H. M. Limonta"
+    }
+  ],
+  "esmodules": [
+    "scripts/ficha-elegante.mjs"
+  ],
+  "styles": [
+    "styles/ficha-elegante.css"
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "ligeia-rpg",
+        "type": "system",
+        "compatibility": {
+          "minimum": "0.1.0"
+        }
+      }
+    ]
+  },
+  "url": "https://github.com/pedrohmlimonta/LigeiaModuloDeFichas",
+  "manifest": "https://github.com/pedrohmlimonta/LigeiaModuloDeFichas/releases/latest/download/module.json",
+  "download": "https://github.com/pedrohmlimonta/LigeiaModuloDeFichas/releases/download/v1.0.0/ligeia-ficha-elegante.zip",
+  "bugs": "https://github.com/pedrohmlimonta/LigeiaModuloDeFichas/issues",
+  "readme": "https://github.com/pedrohmlimonta/LigeiaModuloDeFichas/blob/main/README.md"
+}
